@@ -1,11 +1,12 @@
 package ru.yandex.practicum;
 
-import ru.yandex.practicum.manager.TaskManager;
+import ru.yandex.practicum.manager.task.InMemoryTaskManager;
+import ru.yandex.practicum.manager.task.TaskManager;
 import ru.yandex.practicum.model.*;
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager manager = new TaskManager();
+        TaskManager manager = new InMemoryTaskManager();
 
         // Создаем задачи
         Task task1 = new Task("Учеба в Яндекс Практикуме",
