@@ -18,13 +18,13 @@ public class TaskManager {
     }
 
     private void assignId(Task task) {
-        if (task.getTaskId() == 0) {
-            task.setTaskId(generateTaskId());
+        if (task.getId() == null) {
+            task.setId(generateTaskId());
         }
     }
 
-    public Task getTaskById(int taskId) {
-        return tasks.get(taskId);
+    public Task getTaskById(int id) {
+        return tasks.get(id);
     }
 
     public List<Task> getAllTasks() {
@@ -32,15 +32,15 @@ public class TaskManager {
     }
     public void createTask(Task task) {
         assignId(task);
-        tasks.put(task.getTaskId(), task);
+        tasks.put(task.getId(), task);
     }
 
     public void updateTasks(Task task) {
-        tasks.put(task.getTaskId(), task);
+        tasks.put(task.getId(), task);
     }
 
-    public void deleteTaskById(int taskId) {
-        tasks.remove(taskId);
+    public void deleteTaskById(int id) {
+        tasks.remove(id);
     }
 
     public void deleteAllTasks() {
@@ -52,18 +52,18 @@ public class TaskManager {
         return new ArrayList<>(epics.values());
     }
 
-    public Epic getEpicById(int taskId) {
-        return epics.get(taskId);
+    public Epic getEpicById(int id) {
+        return epics.get(id);
     }
 
     public void createEpic(Epic epic) {
         assignId(epic);
-        epics.put(epic.getTaskId(), epic);
+        epics.put(epic.getId(), epic);
     }
 
     public void updateEpic(Epic epic) {
         calculateEpicStatus(epic);
-        epics.put(epic.getTaskId(), epic);
+        epics.put(epic.getId(), epic);
     }
 
     public void deleteEpicById(int id) {
@@ -91,43 +91,37 @@ public class TaskManager {
     }
 
     public void createSubTask(SubTask subTask) {
-        assignId(subTask);
-        subTasks.put(subTask.getTaskId(), subTask);
         Epic epic = epics.get(subTask.getEpicId());
-        if (epic != null) {
-            epic.addSubTaskId(subTask.getTaskId());
-            calculateEpicStatus(epic);
+        if (epic == null) {
+            throw new IllegalArgumentException("Epic with id " + subTask.getEpicId() + " does not exist. Cannot add SubTask.");
         }
+        assignId(subTask);
+        subTasks.put(subTask.getId(), subTask);
+        epic.addSubTaskId(subTask.getId());
+        calculateEpicStatus(epic);
     }
 
     public void updateSubTask(SubTask subTask) {
-        subTasks.put(subTask.getTaskId(), subTask);
+        subTasks.put(subTask.getId(), subTask);
         Epic epic = epics.get(subTask.getEpicId());
-        if (epic != null) {
-            calculateEpicStatus(epic);
-        }
+        calculateEpicStatus(epic);
     }
 
     public void deleteSubTaskById(int id) {
         for (SubTask subTask : new ArrayList<>(subTasks.values())) {
             Epic epic = epics.get(subTask.getEpicId());
-            if (epic != null) {
-                epic.removeSubTaskId(id);
-                calculateEpicStatus(epic);
-            }
+            epic.removeSubTaskId(id);
+            calculateEpicStatus(epic);
         }
         subTasks.remove(id);
     }
 
     public void deleteAllSubTasks() {
-        for (SubTask subTask : new ArrayList<>(subTasks.values())){
-            Epic epic = epics.get(subTask.getEpicId());
-            if (epic != null) {
-                epic.removeSubTaskId(subTask.getTaskId());
-                calculateEpicStatus(epic);
-            }
-        }
         subTasks.clear();
+        for (Epic epic : epics.values()) {
+            epic.getSubTaskIds().clear();
+            calculateEpicStatus(epic);
+        }
     }
 
     private void calculateEpicStatus(Epic epic) {

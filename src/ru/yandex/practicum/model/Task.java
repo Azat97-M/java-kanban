@@ -1,32 +1,32 @@
 package ru.yandex.practicum.model;
 
 public class Task {
-    protected String taskName;
-    protected String taskDescription;
-    protected int taskId;
-    protected TaskStatus taskStatus;
+    protected String title;
+    protected String description;
+    protected Integer id;
+    protected TaskStatus status;
 
-    public Task(String taskName, String taskDescription, TaskStatus taskStatus){
-        this.taskName = taskName;
-        this.taskDescription = taskDescription;
-        this.taskStatus = taskStatus;
+    public Task(String title, String description, TaskStatus status){
+        this.title = title;
+        this.description = description;
+        this.status = status;
     }
 
 
-    public int getTaskId() {
-        return taskId;
+    public Integer getId() {
+        return id;
     }
 
     public TaskStatus getTaskStatus() {
-        return taskStatus;
+        return status;
     }
 
-    public void setTaskId(int taskId) {
-        this.taskId = taskId;
+    public void setId(Integer id) {
+        this.id = id;
     }
 
-    public void setTaskStatus(TaskStatus taskStatus) {
-        this.taskStatus = taskStatus;
+    public void setTaskStatus(TaskStatus status) {
+        this.status = status;
     }
 
     @Override
@@ -35,21 +35,21 @@ public class Task {
         if (o == null) return false;
         if (!(o instanceof Task)) return false;
         Task task = (Task) o;
-        return taskId == task.taskId;
+        return id.equals(task.id);
     }
 
     @Override
     public final int hashCode() {
-        return Integer.hashCode(taskId);
+        return Integer.hashCode(id);
     }
 
     @Override
     public String toString() {
         return "Task{" +
-                "taskId=" + taskId +
-                ", taskName='" + taskName + '\'' +
-                ", description= '" + taskDescription + '\'' +
-                ", status=" + taskStatus +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description= '" + description + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

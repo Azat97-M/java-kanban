@@ -26,13 +26,13 @@ public class Main {
         SubTask subTask1 = new SubTask("Почитать теорию",
                                         "Изучить конспекты",
                                         TaskStatus.NEW,
-                                        epic1.getTaskId());
+                                        epic1.getId());
         manager.createSubTask(subTask1);
 
         SubTask subTask2 = new SubTask("Решить задачи",
                                     "Практиковаться в тренажере",
                                     TaskStatus.NEW,
-                                    epic1.getTaskId());
+                                    epic1.getId());
         manager.createSubTask(subTask2);
 
         //Создаем Epic с одной подзадачей
@@ -43,7 +43,7 @@ public class Main {
         SubTask subTask3 = new SubTask("Купить напитки",
                                         "Выбрать и заказать шампанское",
                                         TaskStatus.NEW,
-                                        epic2.getTaskId());
+                                        epic2.getId());
         manager.createSubTask(subTask3);
 
         //Печатаем списки все задач, эпиков и подзадач
@@ -69,16 +69,16 @@ public class Main {
 
         //Проверяем обновленные объекты
         System.out.println("После обновления статусов:");
-        System.out.println("Задача 1: " + manager.getTaskById(task1.getTaskId()));
-        System.out.println("Задача 2: " + manager.getTaskById(task2.getTaskId()));
-        System.out.println("Эпик 1: " + manager.getEpicById(epic1.getTaskId()));
-        System.out.println("Эпик 2: " + manager.getEpicById(epic2.getTaskId()));
+        System.out.println("Задача 1: " + manager.getTaskById(task1.getId()));
+        System.out.println("Задача 2: " + manager.getTaskById(task2.getId()));
+        System.out.println("Эпик 1: " + manager.getEpicById(epic1.getId()));
+        System.out.println("Эпик 2: " + manager.getEpicById(epic2.getId()));
         System.out.println("Подзадачи:");
         System.out.println(manager.getAllSubTask());
 
         //Удаляем одну задачу
-        manager.deleteTaskById(task2.getTaskId());
-        manager.deleteEpicById(epic2.getTaskId());
+        manager.deleteTaskById(task2.getId());
+        manager.deleteEpicById(epic2.getId());
 
         System.out.println("После удаления задач:");
         System.out.println("Список задач:");

@@ -3,8 +3,8 @@ package ru.yandex.practicum.model;
 public class SubTask extends Task{
     private final int epicId;
 
-    public SubTask(String taskName, String taskDescription, TaskStatus taskStatus, int epicId) {
-        super(taskName, taskDescription, taskStatus);
+    public SubTask(String title, String description, TaskStatus status, int epicId) {
+        super(title, description, status);
         this.epicId = epicId;
     }
 
@@ -15,10 +15,10 @@ public class SubTask extends Task{
     @Override
     public String toString() {
         return "SubTask{" +
-                "taskId=" + taskId +
-                ", taskName='" + taskName + '\'' +
-                ", description= '" + taskDescription + '\'' +
-                ", status=" + taskStatus +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", description= '" + description + '\'' +
+                ", status=" + status +
                 ", epicId=" + epicId +
                 '}';
     }
