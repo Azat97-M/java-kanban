@@ -16,8 +16,8 @@ public class InMemoryTaskManager implements TaskManager {
 
     private final HistoryManager historyManager;
 
-    public InMemoryTaskManager() {
-        this.historyManager = Managers.getDefaultHistory();
+    public InMemoryTaskManager(InMemoryHistoryManager historyManager) {
+        this.historyManager = historyManager;
     }
 
     // Методы для Task
@@ -26,14 +26,16 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     private void assignId(Task task) {
-        if (task.getId() == null) {
+        if (task.getId() == null || tasks.containsKey(task.getId())) {
             task.setId(generateTaskId());
         }
     }
 
     @Override
     public Task getTaskById(int id) {
-        return tasks.get(id);
+        Task task = tasks.get(id);
+        historyManager.add(task);
+        return task;
     }
 
     @Override
@@ -69,7 +71,9 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public Epic getEpicById(int id) {
-        return epics.get(id);
+        Epic epic = epics.get(id);
+        historyManager.add(epic);
+        return epic;
     }
 
     @Override
@@ -109,14 +113,19 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public SubTask getSubTaskById(int id) {
-        return subTasks.get(id);
+        SubTask subTask = subTasks.get(id);
+        historyManager.add(subTask);
+        return subTask;
     }
 
     @Override
     public void createSubTask(SubTask subTask) {
         Epic epic = epics.get(subTask.getEpicId());
         if (epic == null) {
-            throw new IllegalArgumentException("Epic with id " + subTask.getEpicId() + " does not exist. Cannot add SubTask.");
+            throw new IllegalArgumentException("Эпик с id " + subTask.getEpicId() + " не существует." +
+                                               " Невозможно добавить подзадачу.");
+        } else if (subTask.getEpicId() == subTask.getId()) {
+            throw new IllegalArgumentException("Подзадача не может быть своим же эпиком.");
         }
         assignId(subTask);
         subTasks.put(subTask.getId(), subTask);

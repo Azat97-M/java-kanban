@@ -16,6 +16,9 @@ public class Epic extends Task{
     }
 
     public void addSubTaskId(int subId) {
+        if (this.id == subId) {
+            throw new IllegalArgumentException("Нельзя добавить эпик в подзадачу");
+        }
         subTaskId.add(subId);
     }
 

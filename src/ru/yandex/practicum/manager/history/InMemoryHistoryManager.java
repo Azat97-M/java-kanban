@@ -14,14 +14,24 @@ public class InMemoryHistoryManager implements HistoryManager {
         if (task == null) {
             return;
         }
-        history.add(task);
-        if (history.size() > MAX_HISTORY_SIZE) {
-            history.remove(0);
+
+        Task copyOfTask = copyTask(task);
+
+        if (history.size() == MAX_HISTORY_SIZE) {
+            history.removeFirst();
         }
+
+        history.add(copyOfTask);
     }
 
     @Override
     public List<Task> getHistory() {
         return new ArrayList<>(history);
+    }
+
+    private Task copyTask(Task task) {
+        Task dublicateTask = new Task(task.getTitle(), task.getDescription(), task.getTaskStatus());
+        dublicateTask.setId(task.getId());
+        return dublicateTask;
     }
 }

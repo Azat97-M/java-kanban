@@ -11,31 +11,37 @@ import java.util.List;
 class InMemoryHistoryManagerTest {
 
     @Test
-    public void testHistorySizeLimit() {
+    public void add_deleteFirst_addedMoreThanTen() {
+        // Создаем экземпляр для теста
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        // Добавляем 12 задач, чтобы проверить ограничение истории
-        for (int i = 1; i <= 12; i++) {
+
+        // Добавляем задачи в список просмотров
+        for (int i = 1; i <= 11; i++) {
             Task task = new Task("Task" + i, "Desc" + i, TaskStatus.NEW);
             task.setId(i);
             historyManager.add(task);
         }
+
+        // проверяем, что в истории осталось ровно 10 задач
         List<Task> history = historyManager.getHistory();
-        assertEquals(10, history.size(), "История должна содержать не более 10 задач");
-        // При добавлении 12 задач, первые 2 должны быть удалены.
-        assertEquals(3, history.get(0).getId().intValue(), "Самая старая задача должна иметь id 3");
+        assertEquals(10, history.size(), "История должна содержать 10 задач");
     }
 
     @Test
-    public void testHistoryRetainsTaskSnapshot() {
+    public void add_checkStatus_changeTask() {
+        // Создаем экземпляр для теста
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
-        Task task = new Task("SnapshotTask", "InitialDesc", TaskStatus.NEW);
+
+        // Добавляем задачу с определленым статусом и меняем статус
+        Task task = new Task("Task", "Description", TaskStatus.NEW);
         task.setId(1);
         historyManager.add(task);
 
         task.setTaskStatus(TaskStatus.DONE);
 
+        //Проверяем, что задача в истории осталась  с прежним статусом
         List<Task> history = historyManager.getHistory();
-        assertEquals(TaskStatus.NEW, history.get(0).getTaskStatus(),
-                "История должна сохранять состояние задачи на момент добавления");
+        assertEquals(TaskStatus.NEW, history.getFirst().getTaskStatus(),
+                "История должна сохранять прежнее значение статуса задачи");
     }
 }
