@@ -124,9 +124,14 @@ public class InMemoryTaskManager implements TaskManager {
         if (epic == null) {
             throw new IllegalArgumentException("Эпик с id " + subTask.getEpicId() + " не существует." +
                                                " Невозможно добавить подзадачу.");
-        } else if (subTask.getEpicId() == subTask.getId()) {
-            throw new IllegalArgumentException("Подзадача не может быть своим же эпиком.");
         }
+
+        if (subTask.getId() != null) { // Если значение устанавливается вручную
+            if (subTask.getEpicId() == subTask.getId()) {
+                throw new IllegalArgumentException("Подзадача не может быть своим же эпиком.");
+            }
+        }
+
         assignId(subTask);
         subTasks.put(subTask.getId(), subTask);
         epic.addSubTaskId(subTask.getId());
