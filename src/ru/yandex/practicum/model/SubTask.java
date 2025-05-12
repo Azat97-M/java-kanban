@@ -13,6 +13,14 @@ public class SubTask extends Task{
     }
 
     @Override
+    public void setId(Integer id) {
+        if (id != null && id.equals(epicId)) {
+            throw new IllegalArgumentException("Подзадача не может быть своим эпиком.");
+        }
+        super.setId(id);
+    }
+
+    @Override
     public String toString() {
         return "SubTask{" +
                 "id=" + id +

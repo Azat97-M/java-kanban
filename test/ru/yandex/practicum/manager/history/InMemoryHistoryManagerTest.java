@@ -4,8 +4,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import ru.yandex.practicum.model.Task;
-import ru.yandex.practicum.model.TaskStatus;
+import ru.yandex.practicum.model.*;
 import java.util.List;
 
 class InMemoryHistoryManagerTest {
@@ -28,7 +27,49 @@ class InMemoryHistoryManagerTest {
     }
 
     @Test
-    public void add_checkStatus_changeTask() {
+    public void add_copyContainAllFields_addedEpic() {
+        // Создаём экземпляр и эпик для теста
+        InMemoryHistoryManager manager = new InMemoryHistoryManager();
+        Epic epic = new Epic("Эпик", "Описание");
+        epic.setId(1);
+        epic.getSubTaskIds().add(100);
+
+        // Добавляем в историю
+        manager.add(epic);
+
+        // Проверяем все поля
+        Epic copy = assertInstanceOf(Epic.class, manager.getHistory().getLast(),
+                            "Копия должна быть типа Epic");
+
+        assertEquals(epic.getId(), copy.getId());
+        assertEquals(epic.getTitle(), copy.getTitle());
+        assertEquals(epic.getDescription(), copy.getDescription());
+        assertEquals(epic.getTaskStatus(), copy.getTaskStatus());
+        assertEquals(epic.getSubTaskIds(), copy.getSubTaskIds());
+    }
+
+    @Test
+    public void add_copyContainAllFields_addedSubtask() {
+        // Создаем экзмепляр и подзадачу для теста
+        InMemoryHistoryManager manager = new InMemoryHistoryManager();
+        SubTask subTask = new SubTask("SubTask", "Описание", TaskStatus.IN_PROGRESS, 10);
+        subTask.setId(2);
+
+        // Добавляем в историю
+        manager.add(subTask);
+
+        // Проверяем поля
+        SubTask copy = assertInstanceOf(SubTask.class, manager.getHistory().getLast(),
+                                "Копия должна быть типа SubTask");
+        assertEquals(subTask.getId(), copy.getId());
+        assertEquals(subTask.getTitle(), copy.getTitle());
+        assertEquals(subTask.getDescription(), copy.getDescription());
+        assertEquals(subTask.getTaskStatus(), copy.getTaskStatus());
+        assertEquals(subTask.getEpicId(), copy.getEpicId());
+    }
+
+    @Test
+    public void add_checkImmutabilityOfFields_changeTask() {
         // Создаем экземпляр для теста
         InMemoryHistoryManager historyManager = new InMemoryHistoryManager();
 

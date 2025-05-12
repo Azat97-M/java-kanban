@@ -15,7 +15,7 @@ public class InMemoryHistoryManager implements HistoryManager {
             return;
         }
 
-        Task copyOfTask = copyTask(task);
+        Task copyOfTask = task.clone();
 
         if (history.size() == MAX_HISTORY_SIZE) {
             history.removeFirst();
@@ -27,11 +27,5 @@ public class InMemoryHistoryManager implements HistoryManager {
     @Override
     public List<Task> getHistory() {
         return new ArrayList<>(history);
-    }
-
-    private Task copyTask(Task task) {
-        Task dublicateTask = new Task(task.getTitle(), task.getDescription(), task.getTaskStatus());
-        dublicateTask.setId(task.getId());
-        return dublicateTask;
     }
 }

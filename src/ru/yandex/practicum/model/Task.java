@@ -1,6 +1,6 @@
 package ru.yandex.practicum.model;
 
-public class Task {
+public class Task implements Cloneable{
     protected String title;
     protected String description;
     protected Integer id;
@@ -59,5 +59,14 @@ public class Task {
 
     public String getDescription() {
         return description;
+    }
+
+    @Override
+    public Task clone() {
+        try {
+            return (Task) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError("Не удалось клонировать");
+        }
     }
 }

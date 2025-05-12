@@ -18,7 +18,7 @@ class EpicTest {
     }
 
     @Test
-    public void epics_equal_whenIdsAreEqual() {
+    public void equals_returnTrue_idAreSame() {
         //Подготавливаем экземпляры эпиков
         Epic epic1 = new Epic("Epic1", "Description1");
         Epic epic2 = new Epic("Epic2", "Description2");

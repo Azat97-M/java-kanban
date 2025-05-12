@@ -25,7 +25,6 @@ class InMemoryTaskManagerTest {
         assertEquals(task, foundTask, "Задачу можно найти по её id");
     }
 
-
     @Test
     public void createEpic_addNewEpicAndGetEpicById() {
         //Создаем экземпляр для теста
